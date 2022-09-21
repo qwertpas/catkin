@@ -288,8 +288,79 @@ def main():
             print("Please just enter the character 1 2 3 or 0 to quit \n\n")
 
 
+    input_done = 0
+    startingPosition = 0
+
+    while(not input_done):
+        input_string = input("Enter start position <Either 1 2 3 or 0 to quit> ")
+
+        print("You entered " + input_string + "\n")
+
+        if(int(input_string) == 1):
+            input_done = 1
+            startingPosition = 1
+        elif (int(input_string) == 2):
+            input_done = 1
+            startingPosition = 2
+        elif (int(input_string) == 3):
+            input_done = 1
+            startingPosition = 3
+        elif (int(input_string) == 0):
+            print("Quitting... ")
+            sys.exit()
+        else:
+            print("Please just enter the character 1 2 3 or 0 to quit \n\n")
+
+    input_done = 0
+    endingPosition = 0
+
+    while(not input_done):
+        input_string = input("Enter ending position <Either 1 2 3 or 0 to quit> ")
+
+        print("You entered " + input_string + "\n")
+
+        if(int(input_string) == 1):
+            input_done = 1
+            endingPosition = 1
+        elif (int(input_string) == 2):
+            input_done = 1
+            endingPosition  = 2
+        elif (int(input_string) == 3):
+            input_done = 1
+            endingPosition  = 3
+        elif (int(input_string) == 0):
+            print("Quitting... ")
+            sys.exit()
+        else:
+            print("Please just enter the character 1 2 3 or 0 to quit \n\n")
 
 
+    if(startingPosition == 1):
+        src = Q[0]
+        if(endingPosition == 2):
+            aux = Q[2]
+            des = Q[1]
+        else:
+            aux = Q[1]
+            des = Q[2]
+    if(startingPosition == 2):
+        src = Q[1]
+        if(endingPosition == 1):
+            aux = Q[2]
+            des = Q[0]
+        else:
+            aux = Q[0]
+            des = Q[2]
+    if(startingPosition == 3):
+        src = Q[2]
+        if(endingPosition == 2):
+            aux = Q[0]
+            des = Q[1]
+        else:
+            aux = Q[1]
+            des = Q[0]
+
+    Q = np.array([src, aux, des])    
 
     ############### Your Code End Here ###############
 
