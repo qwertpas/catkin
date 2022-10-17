@@ -1,8 +1,6 @@
-# catkin
+# Project Title: Ethan’s Mom - cockroach killer
 
 
-
-Project Title: Ethan’s Mom - cockroach killer
 Team members: Christopher Xu, Vanessa Blas, Ethan Hsiao
 
 Languages: ROS scripts that control the robot are written in Python 3. Drivers are imported in C++.
