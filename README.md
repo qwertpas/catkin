@@ -1,5 +1,6 @@
 # Project Title: Ethan’s Mom - cockroach killer
 
+![deliverable1](media/deliverable1.png "deliverable1")
 
 Team members: Christopher Xu, Vanessa Blas, Ethan Hsiao
 
