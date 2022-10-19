@@ -140,6 +140,7 @@ def lab_invk(xWgrip, yWgrip, zWgrip, yaw_WgripDegree):
 	x_3end = L_3end * cos(theta1)
 	y_3end = L_3end * sin(theta1)
 	
+	
 
 	L35 = np.linalg.norm((x_3end, y_3end, z_3end - L1))
 	theta3 = pi - arccos((L3**2 + L5**2 - L35**2) / (2*L3*L5))
@@ -149,21 +150,21 @@ def lab_invk(xWgrip, yWgrip, zWgrip, yaw_WgripDegree):
 
 	theta4 = -(arctan2(L_3end, z_3end - L1) - (pi/2 - (theta3 - theta2toppart)))
 
+	theta5 = -pi/2	#fixed so end effector is perpendicular to ground
+
 	print(f"L35: {L35}")
+	print(f"L_3end: {L_3end}")
 
 	print(f"theta1: {degrees(theta1)}")
 	print(f"theta2: {degrees(theta2)}")
 	print(f"theta3: {degrees(theta3)}")
+	print(f"theta4: {degrees(theta4)}")
+	print(f"theta5: {degrees(theta5)}")
 	print(f"theta6: {degrees(theta6)}")
 	print(f"x_3end: {x_3end}")
 	print(f"y_3end: {y_3end}")
 	print(f"z_3end: {z_3end}")
 
-
-	# theta1 = 0.0
-	# theta3 = 0.0
-	# theta4 = 0.0
-	theta5 = 0.0
 	# theta6 = 0.0
 	# ==============================================================#
 	return lab_fk(theta1, theta2, theta3, theta4, theta5, theta6) #add some angle offsets so robot understands 
