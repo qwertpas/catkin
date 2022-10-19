@@ -52,32 +52,19 @@ def Get_MS():
 	v6 = np.cross(-w6, q6)
 
 	
-	# print(f"q6: {q6}")
+	print(f"q1: {q1}")
+	print(f"q2: {q2}")
+	print(f"q3: {q3}")
+	print(f"q4: {q4}")
+	print(f"q5: {q5}")
+	print(f"q6: {q6}")
 
-
-	# w1 = np.array([0,0,1])
-	# q1 = np.array([-150,150,10]) / 1000.
-	# v1 = np.cross(-w1, q1)
-
-	# w2 = np.array ([0,1,0])
-	# q2 = np.array([0, 120, 0]) / 1000.
-	# v2 = np.cross(-w2, q2)
-
-	# w3 = np.array ([0,1,0])
-	# q3 = np.array([244, 0, 0]) / 1000.
-	# v3 = np.cross(-w3, q3)
-
-	# w4 = np.array ([0,1,0])
-	# q4 = np.array([213,-93, 0]) / 1000.
-	# v4 = np.cross(-w4, q4)
-
-	# w5 = np.array ([1,0,0])
-	# q5 = np.array([0, 83, 0]) / 1000.
-	# v5 = np.cross(-w5, q5)
-
-	# w6 = np.array ([0,1,0])
-	# q6 = np.array([0, 83, 0]) / 1000.
-	# v6 = np.cross(-w6, q6)
+	print(f"v1: {v1}")
+	print(f"v2: {v2}")
+	print(f"v3: {v3}")
+	print(f"v4: {v4}")
+	print(f"v5: {v5}")
+	print(f"v6: {v6}")
 
 	
 
