@@ -2,7 +2,7 @@
 import numpy as np
 from numpy import sin, cos, arctan2, tan, pi, degrees, arccos, radians, arcsin, sqrt
 from scipy.linalg import expm
-# from lab4_header import *
+from lab4_header import *
 
 PI = pi
 
@@ -73,7 +73,7 @@ Function that calculates encoder numbers for each motor
 def lab_fk(theta1, theta2, theta3, theta4, theta5, theta6):
 	return_value = [None, None, None, None, None, None]
 
-	print("Foward kinematics calculated:\n")
+	print("Foward kinematics calculated:")
 	M, S = Get_MS()
 
 	T = expm(S[0]*(theta1)) @ expm(S[1]*theta2) @ expm(S[2]*(theta3)) @ expm(S[3]*theta4) @ expm(S[4]*theta5) @ expm(S[5]*theta6) @ M
@@ -170,4 +170,4 @@ def lab_invk(xWgrip, yWgrip, zWgrip, yaw_WgripDegree):
 	return lab_fk(theta1, theta2, theta3, theta4, theta5, theta6) #add some angle offsets so robot understands 
 
 
-lab_invk(0.27, 0.39, 0.08, yaw_WgripDegree=radians(45))
+# lab_invk(0.27, 0.39, 0.08, yaw_WgripDegree=radians(45))

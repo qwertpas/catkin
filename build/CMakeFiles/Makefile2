@@ -66,6 +66,7 @@ all: drivers/gazebo_ros_pkgs/gazebo_ros/all
 all: drivers/ur3_driver/all
 all: lab2pkg_py/all
 all: lab3pkg_py/all
+all: lab4pkg_py/all
 all: drivers/universal_robot/ur_bringup/all
 all: drivers/universal_robot/ur_driver/all
 all: drivers/universal_robot/ur_e_gazebo/all
@@ -92,6 +93,7 @@ preinstall: drivers/gazebo_ros_pkgs/gazebo_ros/preinstall
 preinstall: drivers/ur3_driver/preinstall
 preinstall: lab2pkg_py/preinstall
 preinstall: lab3pkg_py/preinstall
+preinstall: lab4pkg_py/preinstall
 preinstall: drivers/universal_robot/ur_bringup/preinstall
 preinstall: drivers/universal_robot/ur_driver/preinstall
 preinstall: drivers/universal_robot/ur_e_gazebo/preinstall
@@ -123,6 +125,7 @@ clean: drivers/gazebo_ros_pkgs/gazebo_ros/clean
 clean: drivers/ur3_driver/clean
 clean: lab2pkg_py/clean
 clean: lab3pkg_py/clean
+clean: lab4pkg_py/clean
 clean: drivers/universal_robot/ur_bringup/clean
 clean: drivers/universal_robot/ur_driver/clean
 clean: drivers/universal_robot/ur_e_gazebo/clean
@@ -908,6 +911,24 @@ lab3pkg_py/preinstall:
 lab3pkg_py/clean:
 
 .PHONY : lab3pkg_py/clean
+
+#=============================================================================
+# Directory level rules for directory lab4pkg_py
+
+# Recursive "all" directory target.
+lab4pkg_py/all:
+
+.PHONY : lab4pkg_py/all
+
+# Recursive "preinstall" directory target.
+lab4pkg_py/preinstall:
+
+.PHONY : lab4pkg_py/preinstall
+
+# Recursive "clean" directory target.
+lab4pkg_py/clean:
+
+.PHONY : lab4pkg_py/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/doxygen.dir
