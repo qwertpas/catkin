@@ -13,7 +13,9 @@
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <box size="0.0318 0.0318 0.0318" />
+      <!-- <box size="0.0318 0.0318 0.0318" /> -->
+      <mesh filename="package://ur_description/urdf/ur3/cockroach.dae" scale="0.01 0.01 0.01"/>
+
     </geometry>
   </visual>
 
