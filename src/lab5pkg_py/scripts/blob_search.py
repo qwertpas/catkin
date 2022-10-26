@@ -61,16 +61,13 @@ def blob_search(image_raw, color):
     if color == 'green':
         lower = (45,100,50)     # green lower
         upper = (80,255,255)   # green upper
-        # lower = (0,0,0)
-        # upper = (0,0,0)
-    else:
+    elif color == 'yellow':
         lower = (20,150,120)     # yellow lower
         upper = (30,255,255)   # yellow upper
-        # lower = (55,80,80)     # green lower
-        # upper = (75,255,255)   # green upper
-
-    # lower = (20,100,100)     # yellow lower
-    # upper = (30,255,255)   # yellow upper
+    else:
+        #orange
+        lower = (0,150, 130)     # orange lower
+        upper = (25,255,255)   # orange upper
 
     # Define a mask using the lower and upper bounds of the target color
     mask_image = cv2.inRange(hsv_image, lower, upper)
@@ -83,7 +80,7 @@ def blob_search(image_raw, color):
     blob_image_center = []
     num_blobs = len(keypoints)
     for i in range(num_blobs):
-        if(keypoints[i].size > 20):
+        if(keypoints[i].size > 15):
             blob_image_center.append((keypoints[i].pt[0],keypoints[i].pt[1]))
     num_blobs = len(blob_image_center)
     # ========================= Student's code starts here =========================
@@ -93,10 +90,35 @@ def blob_search(image_raw, color):
         if(color == 'green'):
             im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,0))
             im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        else:
+        elif(color == 'yellow'):
             im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,255))
             im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        else:
+            #calibration
 
+            if(len(keypoints) == 2):
+                orange_pts = [[], []]
+                im_with_keypoints = image_raw
+                for i in range(len(keypoints)):
+                    if(keypoints[i].size > 15):
+                        im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[i]], np.array([]), (0,100,255))
+                        im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[i]], np.array([]), (0,100,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+                        # print(f"orange {i}: {keypoints[i].pt}")
+                        orange_pts[i] = keypoints[i].pt
+
+                if(orange_pts[0][0] > orange_pts[1][0]):
+                    tmp = orange_pts[0]
+                    orange_pts[0] = orange_pts[1]
+                    orange_pts[1] = tmp
+                
+
+                betw_oranges = np.array(orange_pts[1]) - np.array(orange_pts[0])
+                pixel_dist = np.linalg.norm(betw_oranges) #
+                pixels_per_meter = pixel_dist / 0.10 #pixels per meter
+                print(f"pixels per meter: {pixels_per_meter}")
+
+                print(f"theta: {np.degrees(np.arctan2(betw_oranges[1], betw_oranges[0]))}")
 
     # ========================= Student's code ends here ===========================
 

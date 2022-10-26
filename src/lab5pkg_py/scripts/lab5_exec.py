@@ -246,6 +246,7 @@ class ImageConverter:
             xw_yw_G = blob_search(cv_image, "green")[0]
         if(len(blob_search(cv_image, "yellow")) > 0):
             xw_yw_Y = blob_search(cv_image, "yellow")[0]
+        blob_search(cv_image, 'orange')
         # xw_yw_Y = blob_search(cv_image, "yellow")
 
 
@@ -295,36 +296,42 @@ def main():
     Hints: use the found xw_yw_G, xw_yw_Y to move the blocks correspondingly. You will
     need to call move_block(pub_command, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel)
     """
+    calibration = True
 
-    def move_xyz(x, y, z):
-        print(f"moving to {x}, {y}, {z}")
-        Q = lab_invk(x, y, z, yaw_WgripDegree=0)
-        move_arm(pub_command, loop_rate, Q, 4.0, 4.0)
-
-    xw_yw_G_save = xw_yw_G
-    xw_yw_Y_save = xw_yw_Y
-
-    if(len(xw_yw_G_save) != 0):
-        move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
-        gripper(pub_command, loop_rate, suction_on)
-        time.sleep(0.5)
-        move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
-        move_xyz(0.20, 0.1, 0.03)
-        gripper(pub_command, loop_rate, suction_off)
+    if(calibration):
+        while(True):
+            print("calibrating")
+            time.sleep(1)
     else:
-        print("GREEN BLOCK NOT FOUND")
-    
+        def move_xyz(x, y, z):
+            print(f"moving to {x}, {y}, {z}")
+            Q = lab_invk(x, y, z, yaw_WgripDegree=0)
+            move_arm(pub_command, loop_rate, Q, 4.0, 4.0)
 
-    if(len(xw_yw_Y_save) != 0):
-        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.06)
-        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.025)
-        gripper(pub_command, loop_rate, suction_on)
-        time.sleep(0.5)
-        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.09)
-        move_xyz(0.20, 0.1, 0.06)
-        gripper(pub_command, loop_rate, suction_off)
-    else:
-        print("YELLOW LB)COKDNOTNOONT FOUND")
+        xw_yw_G_save = xw_yw_G
+        xw_yw_Y_save = xw_yw_Y
+
+        if(len(xw_yw_G_save) != 0):
+            move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
+            gripper(pub_command, loop_rate, suction_on)
+            time.sleep(0.5)
+            move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
+            move_xyz(0.20, 0.1, 0.03)
+            gripper(pub_command, loop_rate, suction_off)
+        else:
+            print("GREEN BLOCK NOT FOUND")
+        
+
+        if(len(xw_yw_Y_save) != 0):
+            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.06)
+            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.025)
+            gripper(pub_command, loop_rate, suction_on)
+            time.sleep(0.5)
+            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.09)
+            move_xyz(0.20, 0.1, 0.06)
+            gripper(pub_command, loop_rate, suction_off)
+        else:
+            print("YELLOW BLOCK NOT FOUND")
 
 
 
@@ -332,12 +339,12 @@ def main():
 
 
 
-    # ========================= Student's code ends here ===========================
+        # ========================= Student's code ends here ===========================
 
-    move_arm(pub_command, loop_rate, go_away, vel, accel)
-    rospy.loginfo("Task Completed!")
-    print("Use Ctrl+C to exit program")
-    rospy.spin()
+        move_arm(pub_command, loop_rate, go_away, vel, accel)
+        rospy.loginfo("Task Completed!")
+        print("Use Ctrl+C to exit program")
+        rospy.spin()
 
 if __name__ == '__main__':
 
