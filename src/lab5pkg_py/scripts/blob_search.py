@@ -59,12 +59,12 @@ def blob_search(image_raw, color):
     # ========================= Student's code starts here =========================
 
     if color == 'green':
-        lower = (55,50,50)     # green lower
+        lower = (45,100,50)     # green lower
         upper = (80,255,255)   # green upper
         # lower = (0,0,0)
         # upper = (0,0,0)
     else:
-        lower = (20,100,120)     # yellow lower
+        lower = (20,150,120)     # yellow lower
         upper = (30,255,255)   # yellow upper
         # lower = (55,80,80)     # green lower
         # upper = (75,255,255)   # green upper
@@ -85,18 +85,19 @@ def blob_search(image_raw, color):
     blob_image_center = []
     num_blobs = len(keypoints)
     for i in range(num_blobs):
-        blob_image_center.append((keypoints[i].pt[0],keypoints[i].pt[1]))
-
+        if(keypoints[i].size > 20):
+            blob_image_center.append((keypoints[i].pt[0],keypoints[i].pt[1]))
+    num_blobs = len(blob_image_center)
     # ========================= Student's code starts here =========================
 
     # Draw the keypoints on the detected block
-
-    if(color == 'green'):
-        im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,0))
-        im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-    else:
-        im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,255))
-        im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+    if(num_blobs != 0):
+        if(color == 'green'):
+            im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,0))
+            im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        else:
+            im_with_keypoints = cv2.drawKeypoints(image_raw, [keypoints[0]], np.array([]), (0,255,255))
+            im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[0]], np.array([]), (0,255,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
 
     # ========================= Student's code ends here ===========================
@@ -104,11 +105,12 @@ def blob_search(image_raw, color):
     xw_yw = []
 
     if(num_blobs == 0):
-        print("No block found!")
+        # print("No block found!")
         return []
     else:
         # Convert image coordinates to global world coordinate using IM2W() function
         for i in range(num_blobs):
+            # if(len(blob_image_center) > 0 and len(blob_image_center[0]) > 0):
             xw_yw.append(IMG2W(blob_image_center[i][0], blob_image_center[i][1]))
 
     # print(xw_yw[0])

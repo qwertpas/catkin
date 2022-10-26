@@ -245,7 +245,7 @@ class ImageConverter:
         if(len(blob_search(cv_image, "green")) > 0):
             xw_yw_G = blob_search(cv_image, "green")[0]
         if(len(blob_search(cv_image, "yellow")) > 0):
-            xw_yw_G = blob_search(cv_image, "yellow")[0]
+            xw_yw_Y = blob_search(cv_image, "yellow")[0]
         # xw_yw_Y = blob_search(cv_image, "yellow")
 
 
@@ -304,12 +304,27 @@ def main():
     xw_yw_G_save = xw_yw_G
     xw_yw_Y_save = xw_yw_Y
 
-    move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
-    gripper(pub_command, loop_rate, suction_on)
-    time.sleep(0.5)
-    move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
-    move_xyz(20, 0, 0.03)
-    gripper(pub_command, loop_rate, suction_off)
+    if(len(xw_yw_G_save) != 0):
+        move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
+        gripper(pub_command, loop_rate, suction_on)
+        time.sleep(0.5)
+        move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
+        move_xyz(0.20, 0.1, 0.03)
+        gripper(pub_command, loop_rate, suction_off)
+    else:
+        print("GREEN BLOCK NOT FOUND")
+    
+
+    if(len(xw_yw_Y_save) != 0):
+        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.06)
+        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.025)
+        gripper(pub_command, loop_rate, suction_on)
+        time.sleep(0.5)
+        move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.09)
+        move_xyz(0.20, 0.1, 0.06)
+        gripper(pub_command, loop_rate, suction_off)
+    else:
+        print("YELLOW LB)COKDNOTNOONT FOUND")
 
 
 
