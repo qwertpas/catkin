@@ -79,8 +79,6 @@ def blob_search(image_raw, color):
 
     keypoints = detector.detect(mask_image)
 
-    # keypoints = keypoints[0:2]
-
     # Find blob centers in the image coordinates
     blob_image_center = []
     num_blobs = len(keypoints)
