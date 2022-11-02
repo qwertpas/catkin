@@ -62,8 +62,8 @@ def blob_search(image_raw, color):
         lower = (45,100,50)     # green lower
         upper = (80,255,255)   # green upper
     elif color == 'yellow':
-        lower = (20,150,120)     # yellow lower
-        upper = (30,255,255)   # yellow upper
+        lower = (10,150,120)     # yellow lower
+        upper = (40,255,255)   # yellow upper
     else:
         #orange
         lower = (0,150, 130)     # orange lower
@@ -96,9 +96,10 @@ def blob_search(image_raw, color):
         else:
             #calibration
 
+            im_with_keypoints = image_raw
+
             if(len(keypoints) == 2):
                 orange_pts = [[], []]
-                im_with_keypoints = image_raw
                 for i in range(len(keypoints)):
                     if(keypoints[i].size > 15):
                         im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[i]], np.array([]), (0,100,255))
@@ -107,18 +108,22 @@ def blob_search(image_raw, color):
                         # print(f"orange {i}: {keypoints[i].pt}")
                         orange_pts[i] = keypoints[i].pt
 
-                if(orange_pts[0][0] > orange_pts[1][0]):
-                    tmp = orange_pts[0]
-                    orange_pts[0] = orange_pts[1]
-                    orange_pts[1] = tmp
-                
+                try:
+                    if(orange_pts[0][0] > orange_pts[1][0]):
+                        tmp = orange_pts[0]
+                        orange_pts[0] = orange_pts[1]
+                        orange_pts[1] = tmp
+                    
 
-                betw_oranges = np.array(orange_pts[1]) - np.array(orange_pts[0])
-                pixel_dist = np.linalg.norm(betw_oranges) #
-                pixels_per_meter = pixel_dist / 0.10 #pixels per meter
-                print(f"pixels per meter: {pixels_per_meter}")
+                    betw_oranges = np.array(orange_pts[1]) - np.array(orange_pts[0])
+                    pixel_dist = np.linalg.norm(betw_oranges) #
+                    pixels_per_meter = pixel_dist / 0.10 #pixels per meter
+                    print(f"pixels per meter: {pixels_per_meter}")
 
-                print(f"theta: {np.degrees(np.arctan2(betw_oranges[1], betw_oranges[0]))}")
+                    print(f"theta: {np.degrees(np.arctan2(betw_oranges[1], betw_oranges[0]))}")
+                except:
+                    print("no calibration target found")
+
 
     # ========================= Student's code ends here ===========================
 
@@ -135,8 +140,8 @@ def blob_search(image_raw, color):
 
     # print(xw_yw[0])
 
-    cv2.namedWindow("Camera View")
-    cv2.imshow("Camera View", image_raw)
+    # cv2.namedWindow("Camera View")
+    # cv2.imshow("Camera View", image_raw)
     cv2.namedWindow("Mask View")
     cv2.imshow("Mask View", mask_image)
     cv2.namedWindow("Keypoint View")

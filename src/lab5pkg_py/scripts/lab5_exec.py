@@ -50,6 +50,8 @@ current_position_set = False
 
 image_shape_define = False
 
+calibration = False
+
 
 """
 Whenever ur3/gripper_input publishes info this callback function is called.
@@ -195,14 +197,40 @@ def move_block(pub_cmd, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel):
     """
     # ========================= Student's code starts here =========================
 
-    # global variable1
-    # global variable2
-
     error = 0
+
+    def move_xyz(x, y, z):
+        print(f"moving to {x}, {y}, {z}")
+        Q = lab_invk(x, y, z, yaw_WgripDegree=0)
+        move_arm(pub_cmd, loop_rate, Q, vel, accel)
+
+    move_xyz(start_xw_yw_zw[0], start_xw_yw_zw[1], start_xw_yw_zw[2] + 0.04)
+    move_xyz(start_xw_yw_zw[0], start_xw_yw_zw[1], start_xw_yw_zw[2])
+    gripper(pub_cmd, loop_rate, suction_on)
+    time.sleep(0.5)
+
+    #check suction
+    if(digital_in_0 == 0):
+        rospy.loginfo(f"Error did not suck")
+        gripper(pub_cmd, loop_rate, suction_off)
+        # error
+        return 1
+
+    #move up a little
+    move_xyz(start_xw_yw_zw[0], start_xw_yw_zw[1], start_xw_yw_zw[2] + 0.04)
+
+    #move to above target pos
+    move_xyz(target_xw_yw_zw[0], target_xw_yw_zw[1], target_xw_yw_zw[2] + 0.04)
+    #go down to target
+    move_xyz(target_xw_yw_zw[0], target_xw_yw_zw[1], target_xw_yw_zw[2])
+    #drop
+    gripper(pub_cmd, loop_rate, suction_off)
+    #move to above target pos
+    move_xyz(target_xw_yw_zw[0], target_xw_yw_zw[1], target_xw_yw_zw[2] + 0.04)
 
     # ========================= Student's code ends here ===========================
 
-    return error
+    return 0 #no error
 
 
 class ImageConverter:
@@ -246,7 +274,8 @@ class ImageConverter:
             xw_yw_G = blob_search(cv_image, "green")[0]
         if(len(blob_search(cv_image, "yellow")) > 0):
             xw_yw_Y = blob_search(cv_image, "yellow")[0]
-        blob_search(cv_image, 'orange')
+        if(calibration):
+            blob_search(cv_image, 'orange')
         # xw_yw_Y = blob_search(cv_image, "yellow")
 
 
@@ -296,42 +325,54 @@ def main():
     Hints: use the found xw_yw_G, xw_yw_Y to move the blocks correspondingly. You will
     need to call move_block(pub_command, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel)
     """
-    calibration = True
 
     if(calibration):
         while(True):
             print("calibrating")
             time.sleep(1)
     else:
-        def move_xyz(x, y, z):
-            print(f"moving to {x}, {y}, {z}")
-            Q = lab_invk(x, y, z, yaw_WgripDegree=0)
-            move_arm(pub_command, loop_rate, Q, 4.0, 4.0)
+        # def move_xyz(x, y, z):
+        #     print(f"moving to {x}, {y}, {z}")
+        #     Q = lab_invk(x, y, z, yaw_WgripDegree=0)
+        #     move_arm(pub_command, loop_rate, Q, 4.0, 4.0)
 
-        xw_yw_G_save = xw_yw_G
-        xw_yw_Y_save = xw_yw_Y
+        xw_yw_G_save = (xw_yw_G[0], xw_yw_G[1], 0.03) 
+        xw_yw_Y_save = (xw_yw_Y[0], xw_yw_Y[1], 0.03)
 
         if(len(xw_yw_G_save) != 0):
-            move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
-            gripper(pub_command, loop_rate, suction_on)
-            time.sleep(0.5)
-            move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
-            move_xyz(0.20, 0.1, 0.03)
-            gripper(pub_command, loop_rate, suction_off)
+            # move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
+            # move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.03)
+            # gripper(pub_command, loop_rate, suction_on)
+            # time.sleep(0.5)
+            # move_xyz(xw_yw_G_save[0], xw_yw_G_save[1], 0.06)
+            # move_xyz(0.20, 0.1, 0.03)
+            # gripper(pub_command, loop_rate, suction_off)
+            # move_xyz(0.20, 0.1, 0.06)
+            green_error = move_block(pub_command, loop_rate, xw_yw_G_save, (0.2, 0.1, 0.03), vel=4, accel=4)
+
         else:
             print("GREEN BLOCK NOT FOUND")
+            green_error = 0
         
 
         if(len(xw_yw_Y_save) != 0):
-            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.06)
-            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.025)
-            gripper(pub_command, loop_rate, suction_on)
-            time.sleep(0.5)
-            move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.09)
-            move_xyz(0.20, 0.1, 0.06)
-            gripper(pub_command, loop_rate, suction_off)
+            # move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.06)
+            # move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.025)
+            # gripper(pub_command, loop_rate, suction_on)
+            # time.sleep(0.5)
+            # move_xyz(xw_yw_Y_save[0], xw_yw_Y_save[1], 0.09)
+            # move_xyz(0.20, 0.1, 0.06)
+            # gripper(pub_command, loop_rate, suction_off)
+            # move_xyz(0.20, 0.1, 0.09)
+            if(green_error):
+                target = (0.2, 0.1, 0.03)
+            else:
+                target = (0.2, 0.1, 0.06)
+            yellow_error = move_block(pub_command, loop_rate, xw_yw_Y_save, target, vel=4, accel=4)
+
         else:
             print("YELLOW BLOCK NOT FOUND")
+            yellow_error = 0
 
 
 
@@ -343,6 +384,12 @@ def main():
 
         move_arm(pub_command, loop_rate, go_away, vel, accel)
         rospy.loginfo("Task Completed!")
+        if(green_error):
+            rospy.loginfo("Error with green block")
+        if(yellow_error):
+            rospy.loginfo("Error with yellow block")
+
+
         print("Use Ctrl+C to exit program")
         rospy.spin()
 
