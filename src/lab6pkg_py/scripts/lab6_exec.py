@@ -31,7 +31,7 @@ image = np.zeros((100, 3, 3))
 SPIN_RATE = 20
 
 # UR3 home location
-home = [0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0]
+# home = [0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0, 0*PI/180.0]
 
 # UR3 current position, using home position for initialization
 current_position = copy.deepcopy(home)
@@ -186,14 +186,15 @@ def move_arm(pub_cmd, loop_rate, dest, vel, accel):
 
 def move_block(pub_cmd, loop_rate, start_pos, end_pos, theta=0, vel=4, accel=4,):
 
-    def move_xyz(x, y, z, theta=0):
+    def move_xyz(x, y, z, yaw=0):
         print(f"moving to {x}, {y}, {z}")
-        Q = lab_invk(x, y, z, yaw_WgripDegree=theta)
-        print('Q', Q)
-        # move_arm(pub_cmd, loop_rate, Q, vel, accel)
+        Q = lab_invk(x, y, z, yaw_WgripDegree=np.degrees(yaw))
+        # print('Q', Q)
+        move_arm(pub_cmd, loop_rate, Q, vel, accel)
 
-    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04)
-    move_xyz(end_pos[0], end_pos[1], end_pos[2])
+    print()
+    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04, -theta/2)
+    move_xyz(start_pos[0], start_pos[1], start_pos[2], -theta/2)
     gripper(pub_cmd, loop_rate, suction_on)
     time.sleep(0.5)
 
@@ -205,16 +206,16 @@ def move_block(pub_cmd, loop_rate, start_pos, end_pos, theta=0, vel=4, accel=4,)
         return 1
 
     #move up a little
-    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04)
+    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04, theta/2)
 
     #move to above target pos
-    move_xyz(end_pos[0], end_pos[1], end_pos[2] + 0.04)
+    move_xyz(end_pos[0], end_pos[1], end_pos[2] + 0.04, theta/2)
     #go down to target
-    move_xyz(end_pos[0], end_pos[1], end_pos[2])
+    move_xyz(end_pos[0], end_pos[1], end_pos[2], theta/2)
     #drop
     gripper(pub_cmd, loop_rate, suction_off)
     #move to above target pos
-    move_xyz(end_pos[0], end_pos[1], end_pos[2] + 0.04)
+    move_xyz(end_pos[0], end_pos[1], end_pos[2] + 0.04, theta/2)
 
     return 0 #no error
 
@@ -254,16 +255,16 @@ class ImageConverter:
 
 
 def stack(pub_command, loop_rate, blocks):
-    move_arm(pub_command, loop_rate, home, vel=4, accel=4)
+    # move_arm(pub_command, loop_rate, home, vel=4, accel=4)
     for i in range(len(blocks)):
         a, b, c = blocks[i]
         ac = c-a
         theta = np.arctan2(ac[1], ac[0])
 
         start_pos = (b[0], b[1], 0.03)
-        end_pos = (0.2, 0.1, 0.03*i)
+        end_pos = (0.2, 0.0, 0.03*(i+1))
 
-        move_block(pub_command, loop_rate, start_pos, end_pos, theta=theta)
+        move_block(pub_command, loop_rate, start_pos, end_pos, theta=-theta)
     print('done')
     exit()
 
@@ -298,65 +299,68 @@ def main():
     accel = 4.0
     move_arm(pub_command, loop_rate, go_away, vel, accel)
 
+
+
     ic = ImageConverter(SPIN_RATE)
 
     gripper(pub_command, loop_rate, suction_off)
 
-    time.sleep(1)
+    # time.sleep(1)
 
     print("start loop")
 
     moving = False
     while(True):
 
-        for color in mask_dict:
-            cv2.imshow(f"Mask View {color}", mask_dict[color])
+        # for color in mask_dict:
+        #     cv2.imshow(f"Mask View {color}", mask_dict[color])
         cv2.imshow("keypoints", image)
         if cv2.waitKey(1)& 0xFF == ord('q'):
             return
         # time.sleep(0.5)
 
-        # print(blob_dict)
-
-        cancel = False
-        for color in blob_dict:
-            if len(blob_dict[color]) != 2:
-                cancel = True
-                break
-        if cancel:
-            continue
-
-        blob_dict_save = copy.deepcopy(blob_dict)
-
-        def score(a, b, c):
-            ab = b-a
-            ac = c-a
-            return norm(2*ab - ac) + norm(ab)
-
-        blocks = []
-        for a in blob_dict_save['green']:
-            minscore = np.inf
-            b_best = np.zeros(2)
-            c_best = np.zeros(2)
-            for b in blob_dict_save['teal']:
-                for c in blob_dict_save['pink']:
-                    newscore = score(a,b,c)
-                    if newscore < minscore:
-                        minscore = newscore
-                        b_best = b
-                        c_best = c
-
-            blocks.append(np.array([a, b_best, c_best]))
-
-        # print('\n', "blocks", blocks, '\n')
-
-
-
+        # print(blob_dict
         
         
         if not moving:
+            time.sleep(2)
+            cancel = False
+            for color in blob_dict:
+                if len(blob_dict[color]) != 2:
+                    cancel = True
+                    break
+            if cancel:
+                continue
+
+            blob_dict_save = copy.deepcopy(blob_dict)
+
+
+
+            def score(a, b, c):
+                ab = b-a
+                ac = c-a
+                return norm(2*ab - ac) + norm(ab)
+
+            blocks = []
+            for a in blob_dict_save['green']:
+                minscore = np.inf
+                b_best = np.zeros(2)
+                c_best = np.zeros(2)
+                for b in blob_dict_save['teal']:
+                    for c in blob_dict_save['pink']:
+                        newscore = score(a,b,c)
+                        if newscore < minscore:
+                            minscore = newscore
+                            b_best = b
+                            c_best = c
+
+                blocks.append(np.array([a, b_best, c_best]))
+
+            print('\n', "blocks", blocks, '\n')
             moving = True
             print('start move')
+            move_arm(pub_command, loop_rate, home, vel, accel)
+
             thread = Thread(target = stack, args = (pub_command, loop_rate, blocks))
             thread.start()
         
@@ -367,7 +371,7 @@ def main():
     rospy.loginfo("Task Completed!")
 
     print("Use Ctrl+C to exit program")
-    rospy.spin()
+    # rospy.spin()
 
 
 if __name__ == '__main__':

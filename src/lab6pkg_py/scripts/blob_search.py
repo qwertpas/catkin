@@ -8,16 +8,20 @@ import numpy as np
 
 # Params for camera calibration
 theta = 0
-beta = (439-236)/(0.28) #pixels per meter or (447-232)/30
-tx = 221
-ty = 71
+beta = (442-214)/(0.30) #pixels per meter or (447-232)/30 = 760
+# tx = 231
+tx=214
+#222-tx)/760=0.205
+# ty = 81
+# 328-tx/760=0.15
+ty = 66
 
 # Function that converts image coord to world coord
 def IMG2W(xy):
-    row, col = xy
+    col, row = xy
 
-    x = (row - tx)/beta
-    y = (col - ty)/beta
+    x = (row - ty)/beta
+    y = (col - tx)/beta
 
     R = np.array([
         [np.cos(theta), -np.sin(theta)],

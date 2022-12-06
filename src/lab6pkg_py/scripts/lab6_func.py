@@ -76,12 +76,12 @@ Function that calculates encoder numbers for each motor
 def lab_fk(theta1, theta2, theta3, theta4, theta5, theta6):
     return_value = [None, None, None, None, None, None]
 
-    print("Foward kinematics calculated:")
+    # print("Foward kinematics calculated:")
     M, S = Get_MS()
 
     T = expm(S[0]*(theta1)) @ expm(S[1]*theta2) @ expm(S[2]*(theta3)
                                                        ) @ expm(S[3]*theta4) @ expm(S[4]*theta5) @ expm(S[5]*theta6) @ M
-    print(f"T: {str(T)}\n")
+    # print(f"T: {str(T)}\n")
 
     return_value[0] = theta1 + PI
     return_value[1] = theta2
@@ -158,18 +158,18 @@ def lab_invk(xWgrip, yWgrip, zWgrip, yaw_WgripDegree):
 
     theta5 = -pi/2  # fixed so end effector is perpendicular to ground
 
-    print(f"L35: {L35}")
-    print(f"L_3end: {L_3end}")
+    # print(f"L35: {L35}")
+    # print(f"L_3end: {L_3end}")
 
-    print(f"theta1: {degrees(theta1)}")
-    print(f"theta2: {degrees(theta2)}")
-    print(f"theta3: {degrees(theta3)}")
-    print(f"theta4: {degrees(theta4)}")
-    print(f"theta5: {degrees(theta5)}")
-    print(f"theta6: {degrees(theta6)}")
-    print(f"x_3end: {x_3end}")
-    print(f"y_3end: {y_3end}")
-    print(f"z_3end: {z_3end}")
+    # print(f"theta1: {degrees(theta1)}")
+    # print(f"theta2: {degrees(theta2)}")
+    # print(f"theta3: {degrees(theta3)}")
+    # print(f"theta4: {degrees(theta4)}")
+    # print(f"theta5: {degrees(theta5)}")
+    # print(f"theta6: {degrees(theta6)}")
+    # print(f"x_3end: {x_3end}")
+    # print(f"y_3end: {y_3end}")
+    # print(f"z_3end: {z_3end}")
 
     # theta6 = 0.0
     # ==============================================================#

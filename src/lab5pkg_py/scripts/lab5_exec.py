@@ -50,7 +50,7 @@ current_position_set = False
 
 image_shape_define = False
 
-calibration = False
+calibration = True
 
 
 """
