@@ -2,4 +2,4 @@
 source_root_dir = '/home/ur3/Documents/catkin_AB6/src'
 whitelisted_packages = ''.split(';') if '' != '' else []
 blacklisted_packages = ''.split(';') if '' != '' else []
-underlay_workspaces = '/home/ur3/Documents/catkin_AB6/devel;/opt/ros/noetic'.split(';') if '/home/ur3/Documents/catkin_AB6/devel;/opt/ros/noetic' != '' else []
+underlay_workspaces = '/opt/ros/noetic'.split(';') if '/opt/ros/noetic' != '' else []

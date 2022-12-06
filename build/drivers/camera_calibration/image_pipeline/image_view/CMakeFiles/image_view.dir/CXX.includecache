@@ -24,22 +24,6 @@ dynamic_reconfigure/config_init_mutex.h
 boost/any.hpp
 -
 
-/home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/disparity_nodelet.cpp
-ros/ros.h
--
-nodelet/nodelet.h
--
-sensor_msgs/image_encodings.h
--
-stereo_msgs/DisparityImage.h
--
-opencv2/highgui/highgui.hpp
--
-window_thread.h
-/home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/window_thread.h
-pluginlib/class_list_macros.h
--
-
 /home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/image_nodelet.cpp
 image_view/ImageViewConfig.h
 -
@@ -64,14 +48,6 @@ boost/thread.hpp
 boost/format.hpp
 -
 pluginlib/class_list_macros.h
--
-
-/home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/window_thread.cpp
-window_thread.h
-/home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/window_thread.h
-opencv2/highgui/highgui.hpp
--
-boost/thread.hpp
 -
 
 /home/ur3/Documents/catkin_AB6/src/drivers/camera_calibration/image_pipeline/image_view/src/nodelets/window_thread.h
@@ -1270,28 +1246,6 @@ ros/serialization.h
 ros/builtin_message_traits.h
 -
 ros/message_operations.h
--
-
-/opt/ros/noetic/include/stereo_msgs/DisparityImage.h
-string
--
-vector
--
-map
--
-ros/types.h
--
-ros/serialization.h
--
-ros/builtin_message_traits.h
--
-ros/message_operations.h
--
-std_msgs/Header.h
--
-sensor_msgs/Image.h
--
-sensor_msgs/RegionOfInterest.h
 -
 
 /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h

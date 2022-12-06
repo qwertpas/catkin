@@ -1,0 +1,8 @@
+prefix=/home/ur3/Documents/catkin_AB6/install
+
+Name: lab6pkg_py
+Description: Description of lab6pkg_py
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -9,15 +9,15 @@ import numpy as np
 # Params for camera calibration
 theta = 0
 beta = (439-236)/(0.28) #pixels per meter or (447-232)/30
-tx = 232
-ty = 63
+tx = 221
+ty = 71
 
 # Function that converts image coord to world coord
 def IMG2W(xy):
     row, col = xy
 
-    x = (row - ty)/beta
-    y = (col - tx)/beta
+    x = (row - tx)/beta
+    y = (col - ty)/beta
 
     R = np.array([
         [np.cos(theta), -np.sin(theta)],
@@ -30,6 +30,8 @@ def IMG2W(xy):
 # ========================= Student's code ends here ===========================
 
 def blob_search(image_raw):
+
+    # image_raw = cv2.bilateralFilter(image_raw,9,75,75)
 
     # Setup SimpleBlobDetector parameters.
     params = cv2.SimpleBlobDetector_Params()
@@ -62,10 +64,11 @@ def blob_search(image_raw):
 
     color_dict = {
         'green': ((45,100,50), (80,255,255)),
-        'yellow': ((10,150,120), (40,255,255)),
-        'orange': ((0,150, 130), (25,255,255))
+        'teal': ((80,120,80), (130,255,255)),
+        'pink': ((0, 100, 100), (50,255,255), (170, 100, 100), (180,255,255))
     }
 
+    mask_dict = {}
     blob_dict = {}
 
     for color in color_dict:
@@ -76,8 +79,10 @@ def blob_search(image_raw):
         lower = color_dict[color][0]
         upper = color_dict[color][1]
         mask_image = cv2.inRange(hsv_image, lower, upper)
-
+        if(color=='pink'):
+            mask_image = mask_image + cv2.inRange(hsv_image, color_dict[color][2], color_dict[color][3])
         keypoints = detector.detect(mask_image)
+        mask_dict[color] = mask_image
 
         # save blob centers in the image coordinates
         for i in range(len(keypoints)):
@@ -87,18 +92,18 @@ def blob_search(image_raw):
 
         # Draw the keypoints on the detected block
         for i in range(num_blobs):
-            im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[i]], np.array([]), upper, cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+            im_with_keypoints = cv2.drawKeypoints(im_with_keypoints, [keypoints[i]], np.array([]), (255,255,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
             
+            # print(color, blob_dict[color][i])
             #convert image position to real world coordiantes
             blob_dict[color][i] = IMG2W(blob_dict[color][i])
 
+    # for color in color_dict:
+    #     cv2.imshow(f"Mask View {color}", mask_dict[color])
+    # cv2.namedWindow("Keypoint View")
+    # cv2.imshow("Keypoint View", im_with_keypoints)
 
-    cv2.namedWindow("Mask View")
-    cv2.imshow("Mask View", mask_image)
-    cv2.namedWindow("Keypoint View")
-    cv2.imshow("Keypoint View", im_with_keypoints)
+    # if cv2.waitKey(1)& 0xFF == ord('q'):
+    #     return blob_dict
 
-    if cv2.waitKey(1)& 0xFF == ord('q'):
-        return blob_dict
-
-    return blob_dict
+    return blob_dict, mask_dict, im_with_keypoints

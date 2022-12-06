@@ -429,6 +429,13 @@
 /home/ur3/Documents/catkin_AB6/build/lab5pkg_py/CMakeFiles/rebuild_cache.dir
 /home/ur3/Documents/catkin_AB6/build/lab5pkg_py/CMakeFiles/edit_cache.dir
 /home/ur3/Documents/catkin_AB6/build/lab5pkg_py/CMakeFiles/test.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/install/strip.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/install/local.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/install.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/list_install_components.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/rebuild_cache.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/edit_cache.dir
+/home/ur3/Documents/catkin_AB6/build/lab6pkg_py/CMakeFiles/test.dir
 /home/ur3/Documents/catkin_AB6/build/drivers/universal_robot/ur_bringup/CMakeFiles/install/strip.dir
 /home/ur3/Documents/catkin_AB6/build/drivers/universal_robot/ur_bringup/CMakeFiles/run_tests_ur_bringup.dir
 /home/ur3/Documents/catkin_AB6/build/drivers/universal_robot/ur_bringup/CMakeFiles/run_tests_ur_bringup_roslaunch-check_tests_roslaunch_test.xml.dir
