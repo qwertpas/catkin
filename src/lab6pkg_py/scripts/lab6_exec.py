@@ -206,7 +206,7 @@ def move_block(pub_cmd, loop_rate, start_pos, end_pos, theta=0, vel=4, accel=4,)
         return 1
 
     #move up a little
-    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04, theta/2)
+    move_xyz(start_pos[0], start_pos[1], start_pos[2] + 0.04, -theta/2)
 
     #move to above target pos
     move_xyz(end_pos[0], end_pos[1], end_pos[2] + 0.04, theta/2)
@@ -262,7 +262,8 @@ def stack(pub_command, loop_rate, blocks):
         theta = np.arctan2(ac[1], ac[0])
 
         start_pos = (b[0], b[1], 0.03)
-        end_pos = (0.2, 0.0, 0.03*(i+1))
+        # end_pos = (0.2, 0.0, 0.03*(i+1))
+        end_pos = (0.2 + i*0.105, 0.0, 0.03)
 
         move_block(pub_command, loop_rate, start_pos, end_pos, theta=-theta)
     print('done')
@@ -306,24 +307,25 @@ def main():
     gripper(pub_command, loop_rate, suction_off)
 
     # time.sleep(1)
+    time.sleep(2)
+
 
     print("start loop")
 
     moving = False
     while(True):
 
-        # for color in mask_dict:
-        #     cv2.imshow(f"Mask View {color}", mask_dict[color])
+        for color in mask_dict:
+            cv2.imshow(f"Mask View {color}", mask_dict[color])
         cv2.imshow("keypoints", image)
         if cv2.waitKey(1)& 0xFF == ord('q'):
             return
         # time.sleep(0.5)
 
-        # print(blob_dict
+        print(blob_dict)
         
         
         if not moving:
-            time.sleep(2)
             cancel = False
             for color in blob_dict:
                 if len(blob_dict[color]) != 2:

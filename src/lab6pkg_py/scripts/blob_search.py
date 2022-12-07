@@ -10,11 +10,14 @@ import numpy as np
 theta = 0
 beta = (442-214)/(0.30) #pixels per meter or (447-232)/30 = 760
 # tx = 231
-tx=214
+tx=233
 #222-tx)/760=0.205
 # ty = 81
 # 328-tx/760=0.15
-ty = 66
+# ty = 14
+ty = 5
+
+#0.24, 0.14->341,183
 
 # Function that converts image coord to world coord
 def IMG2W(xy):
@@ -68,8 +71,8 @@ def blob_search(image_raw):
 
     color_dict = {
         'green': ((45,100,50), (80,255,255)),
-        'teal': ((80,120,80), (130,255,255)),
-        'pink': ((0, 100, 100), (50,255,255), (170, 100, 100), (180,255,255))
+        'teal': ((80,120,100), (130,255,255)),
+        'pink': ((0, 100, 120), (50,255,255), (170, 100, 120), (180,255,255))
     }
 
     mask_dict = {}
